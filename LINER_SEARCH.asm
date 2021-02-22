@@ -1,0 +1,55 @@
+PRINT MACRO P1 
+CALL NEWLINE
+MOV DX,OFFSET P1
+MOV AH,9
+INT 21H   
+ENDM
+
+.MODEL SMALL
+.DATA
+VAR1     DB 'SEARCH IN ARRAY (LINEAR SEARCH) $'
+NOTEQUAL DB 'NOT FOUND IN ARRAY$'
+EQUL     DB 'FOUND IN ARRAY$'
+ARR      DB '12','67','89','33','98','22','77'
+
+.CODE
+MAIN PROC    
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    PRINT VAR1
+    
+    MOV CX,5
+    
+    MOV SI,OFFSET ARR
+    
+    LM:
+    CMP [SI],'98'
+    JE EQL
+    INC SI
+    DEC CX
+    JNZ LM
+    
+    PRINT NOTEQUAL
+    
+    JMP END1
+    
+    EQL:
+    PRINT EQUL
+    END1:
+    MOV AH,4CH
+    INT 21H
+    
+    MAIN ENDP 
+
+NEWLINE PROC
+    MOV DX,0AH
+    MOV AH,2
+    INT 21H
+    
+    MOV DX,0DH
+    MOV AH,2
+    INT 21H 
+     RET
+NEWLINE ENDP
+END

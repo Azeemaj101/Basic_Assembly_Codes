@@ -1,0 +1,108 @@
+PRINT MACRO P1 
+CALL NEWLINE
+MOV DX,OFFSET P1
+MOV AH,9
+INT 21H   
+ENDM
+
+.MODEL SMALL
+.STACK 100H
+.DATA
+         
+  NUM1 DW ?
+  NUM2 DW ? 
+  ENTER1 DW 'ENTER FIRST  NUMBER = $'
+  ENTER2 DW 'ENTER SECOND NUMBER = $'
+  MSG1 DW 'SQUARE OF FIRST  NUMBER = $'
+  MSG2 DW 'SQUARE OF SECOND NUMBER = $' 
+  MSG3 DW 'SUBTRACTION IS = $'
+  MSG4 DW 'MULTIPLICATION = $'  
+     
+     
+.CODE
+MAIN PROC
+   
+   MOV AX,@DATA
+   MOV DS,AX
+   
+   PRINT ENTER1
+   MOV AH,1
+   INT 21H
+   SUB AL,48
+   MOV NUM1,AX
+   
+   PRINT ENTER2
+   MOV AH,1
+   INT 21H
+   SUB AL,48
+   MOV NUM2,AX
+   
+   PRINT MSG1
+     
+   MOV BX,NUM1
+   MOV AX,0
+   MOV CX,NUM1
+   L1:
+    ADD AX,BX
+   LOOP L1 
+   ADD AX,48
+   MOV DX,AX
+   MOV AH,2
+   INT 21H 
+    CALL NEWLINE
+   JMP A
+   
+                
+   
+   A:
+   PRINT MSG2
+    
+   MOV BX,NUM2
+   MOV AX,0
+   MOV CX,NUM2
+   L2:
+    ADD AX,BX
+   LOOP L2  
+   ADD AX,48
+   MOV DX,AX
+   MOV AH,2
+   INT 21H
+    
+   CALL NEWLINE
+   PRINT MSG3
+    
+   MOV AX,NUM2
+   MOV BX,NUM1 
+   SUB AX,BX
+   ADD AX,48
+   MOV DX,AX
+   MOV AH,2
+   INT 21H
+  
+   CALL NEWLINE
+   PRINT MSG4
+   
+   MOV AX,NUM1
+   MOV BX,NUM2 
+   MUL BX    
+   ADD AX,48
+   MOV DX,AX
+   MOV AH,2
+   INT 21H 
+   
+   MOV AH,4CH
+   INT 21H
+   MAIN ENDP
+
+NEWLINE PROC
+    MOV DX,10
+    MOV AH,2
+    INT 21H
+    
+    MOV DX,13
+    MOV AH,2
+    INT 21H 
+     RET
+NEWLINE ENDP
+
+END
